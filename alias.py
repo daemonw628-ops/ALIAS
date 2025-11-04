@@ -335,9 +335,10 @@ class ALIAS:
     
     def setup_gui(self):
         """Create the ultimate FREE ALIAS interface"""
-        self.root.title("FREE ALIAS - Advanced Learning Intelligence Assistant System")
-        self.root.geometry("1400x900")
+        self.root.title("A.L.I.A.S.")
+        self.root.geometry("600x700")
         self.root.configure(bg='#0a0a0a')
+        self.root.resizable(True, True)
         
         # ALIAS-style theme
         self.colors = {
@@ -383,113 +384,56 @@ class ALIAS:
     
     def create_header(self):
         """Create the ALIAS header with all controls"""
-        header_frame = tk.Frame(self.root, bg=self.colors['bg_secondary'], height=100)
+        header_frame = tk.Frame(self.root, bg=self.colors['bg_secondary'], height=80)
         header_frame.pack(fill='x')
         header_frame.pack_propagate(False)
         
-        # Left side - ALIAS branding
-        left_frame = tk.Frame(header_frame, bg=self.colors['bg_secondary'])
-        left_frame.pack(side='left', fill='y', padx=20)
+        # Center everything
+        center_frame = tk.Frame(header_frame, bg=self.colors['bg_secondary'])
+        center_frame.pack(expand=True, fill='both')
+        
+        # Create circular avatar using canvas
+        avatar_frame = tk.Frame(center_frame, bg=self.colors['bg_secondary'])
+        avatar_frame.pack(side='left', padx=20)
+        
+        canvas = tk.Canvas(avatar_frame, width=50, height=50, 
+                          bg=self.colors['bg_secondary'], 
+                          highlightthickness=0)
+        canvas.pack(pady=15)
+        
+        # Draw circle
+        canvas.create_oval(5, 5, 45, 45, 
+                          fill=self.colors['accent_green'], 
+                          outline=self.colors['accent_blue'], 
+                          width=2)
         
         # ALIAS title
-        title_label = tk.Label(left_frame, text="A.L.I.A.S.", 
-                              font=('Arial', 24, 'bold'), 
+        title_label = tk.Label(center_frame, text="A.L.I.A.S.", 
+                              font=('Arial', 18, 'bold'), 
                               fg=self.colors['accent_green'], 
                               bg=self.colors['bg_secondary'])
-        title_label.pack(anchor='w', pady=(15, 0))
+        title_label.pack(side='left', pady=15)
         
-        subtitle_label = tk.Label(left_frame, text="100% Free • No API Costs • For Everyone", 
-                                 font=('Arial', 11, 'bold'), 
-                                 fg=self.colors['accent_gold'], 
-                                 bg=self.colors['bg_secondary'])
-        subtitle_label.pack(anchor='w')
+        # Right side - minimal controls
+        right_frame = tk.Frame(header_frame, bg=self.colors['bg_secondary'])
+        right_frame.pack(side='right', padx=20)
         
-        tech_label = tk.Label(left_frame, text="Advanced Learning Intelligent Assistant System", 
-                             font=('Arial', 10, 'italic'), 
-                             fg=self.colors['text_secondary'], 
-                             bg=self.colors['bg_secondary'])
-        tech_label.pack(anchor='w')
+        controls_frame = tk.Frame(right_frame, bg=self.colors['bg_secondary'])
+        controls_frame.pack(pady=15)
         
-        # Center - Mode and Subject controls
-        center_frame = tk.Frame(header_frame, bg=self.colors['bg_secondary'])
-        center_frame.pack(side='left', expand=True, fill='both', padx=20)
-        
-        controls_frame = tk.Frame(center_frame, bg=self.colors['bg_secondary'])
-        controls_frame.pack(expand=True)
-        
-        # Mode selector
-        tk.Label(controls_frame, text="Mode:", font=('Arial', 11, 'bold'), 
-                fg=self.colors['text_primary'], bg=self.colors['bg_secondary']).grid(row=0, column=0, padx=(0, 10), sticky='e')
-        
+        # Mode selector (compact)
         self.mode_var = tk.StringVar(value=self.current_mode)
         self.mode_combo = ttk.Combobox(controls_frame, textvariable=self.mode_var,
                                       values=list(self.modes.keys()),
-                                      width=12, state='readonly',
-                                      font=('Arial', 10))
-        self.mode_combo.grid(row=0, column=1, padx=(0, 20))
+                                      width=10, state='readonly',
+                                      font=('Arial', 9))
+        self.mode_combo.pack(side='left', padx=5)
         self.mode_combo.bind('<<ComboboxSelected>>', self.on_mode_change)
         
-        # Subject selector (for study mode)
-        tk.Label(controls_frame, text="Subject:", font=('Arial', 11, 'bold'), 
-                fg=self.colors['text_primary'], bg=self.colors['bg_secondary']).grid(row=0, column=2, padx=(0, 10), sticky='e')
-        
-        self.subject_var = tk.StringVar(value=self.current_subject)
-        self.subject_combo = ttk.Combobox(controls_frame, textvariable=self.subject_var,
-                                         values=["General", "Mathematics", "Science", "History", 
-                                                "English", "Programming", "Physics", "Chemistry",
-                                                "Biology", "Literature", "Languages", "Business",
-                                                "Psychology", "Philosophy", "Art", "Music", "Other"],
-                                         width=15, state='readonly')
-        self.subject_combo.grid(row=0, column=3)
-        self.subject_combo.bind('<<ComboboxSelected>>', self.on_subject_change)
-        
-        # Backend status
-        backend_status = f"AI Backend: {self.ai_engine.current_backend.replace('_', ' ').title()}"
-        self.backend_label = tk.Label(controls_frame, text=backend_status,
-                                     font=('Arial', 10, 'bold'),
-                                     fg=self.colors['accent_green'],
-                                     bg=self.colors['bg_secondary'])
-        self.backend_label.grid(row=1, column=0, columnspan=4, pady=(5, 0))
-        
-        # Mode description
-        self.mode_desc_label = tk.Label(controls_frame, 
-                                       text=self.modes[self.current_mode],
-                                       font=('Arial', 10, 'italic'),
-                                       fg=self.colors['text_dim'], 
-                                       bg=self.colors['bg_secondary'])
-        self.mode_desc_label.grid(row=2, column=0, columnspan=4, pady=(2, 0))
-        
-        # Right side - System controls
-        right_frame = tk.Frame(header_frame, bg=self.colors['bg_secondary'])
-        right_frame.pack(side='right', fill='y', padx=20)
-        
-        # Voice controls
-        if VOICE_AVAILABLE:
-            voice_frame = tk.Frame(right_frame, bg=self.colors['bg_secondary'])
-            voice_frame.pack(side='top', pady=(10, 5))
-            
-            self.voice_button = tk.Button(voice_frame, text="Start Listening", 
-                                         command=self.toggle_voice_listening,
-                                         bg=self.colors['accent_blue'], fg='black',
-                                         font=('Arial', 10, 'bold'),
-                                         padx=15, pady=5)
-            self.voice_button.pack()
-        
-        # Quick controls
-        controls_frame2 = tk.Frame(right_frame, bg=self.colors['bg_secondary'])
-        controls_frame2.pack(side='top', pady=(5, 10))
-        
-        tk.Button(controls_frame2, text="Clear", command=self.clear_chat,
+        # Clear button
+        tk.Button(controls_frame, text="Clear", command=self.clear_chat,
                  bg=self.colors['bg_panel'], fg=self.colors['text_primary'],
-                 font=('Arial', 9), padx=10).pack(side='left', padx=(0, 5))
-        
-        tk.Button(controls_frame2, text="Save", command=self.save_conversation,
-                 bg=self.colors['bg_panel'], fg=self.colors['text_primary'],
-                 font=('Arial', 9), padx=10).pack(side='left', padx=(0, 5))
-        
-        tk.Button(controls_frame2, text="Settings", command=self.show_settings,
-                 bg=self.colors['bg_panel'], fg=self.colors['text_primary'],
-                 font=('Arial', 9), padx=10).pack(side='left')
+                 font=('Arial', 9), padx=10).pack(side='left', padx=5)
     
     def create_main_interface(self):
         """Create the main chat and tools interface"""
