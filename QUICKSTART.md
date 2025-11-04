@@ -1,10 +1,10 @@
 # ALIAS Quick Start Guide
 
-## ✅ Fixed Issues
+## Fixed Issues
 - **Variable name collision bug fixed** in `alias.py` (line 1306)
 - Tests run successfully with 100% pass rate
 
-## 🚀 Running on Your Laptop (Linux/Mac)
+## Running on Your Laptop (Linux/Mac)
 
 ### Prerequisites
 - Python 3.8+ installed
@@ -67,7 +67,7 @@ python alias.py creative
 python test_ai.py
 ```
 
-## ⚠️ Troubleshooting
+## Troubleshooting
 
 ### "no display name and no $DISPLAY environment variable"
 **On local laptop with GUI:**
@@ -103,18 +103,18 @@ pip install SpeechRecognition pyttsx3 pyaudio pygame
 chmod +x run.sh
 ```
 
-## 🎯 What Works Now
+## What Works Now
 
-✅ AI engine fully functional  
-✅ Test suite passes 100%  
-✅ Knowledge base loads correctly  
-✅ 7 AI modes available  
-✅ Fast response times (<0.02s)  
-✅ Offline and free  
+- AI engine fully functional  
+- Test suite passes 100%  
+- Knowledge base loads correctly  
+- 7 AI modes available  
+- Fast response times (<0.02s)  
+- Offline and free  
 
 The only requirement is a display (GUI) to run the Tkinter interface. On your laptop this should work perfectly!
 
-## 📝 Quick Commands Reference
+## Quick Commands Reference
 
 ```bash
 # Activate environment (do this first each time)
@@ -132,7 +132,7 @@ python test_ai.py
 deactivate
 ```
 
-## 🆘 Still Having Issues?
+##  Still Having Issues?
 
 1. Make sure you're on Python 3.8+: `python3 --version`
 2. Verify venv is activated (you see `(.venv)` in prompt)

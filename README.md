@@ -3,18 +3,18 @@
 **The Ultimate FREE AI Companion - Now with Built-In AI Engine!**
 
 ALIAS is your complete digital assistant with **zero costs forever**:
-- 🧠 **Built-in AI Engine** - No external APIs needed!
-- 🎙️ **Voice Interaction** with wake word detection
-- 📚 **Academic Tutoring** across all subjects  
-- 💼 **Professional Productivity** assistance
-- 🎨 **Creative Writing** support
-- 💻 **Programming Help**
-- 🏠 **Personal Life Management**
-- 🎮 **Entertainment**
+- **Built-in AI Engine** - No external APIs needed!
+- **Voice Interaction** with wake word detection
+- **Academic Tutoring** across all subjects  
+- **Professional Productivity** assistance
+- **Creative Writing** support
+- **Programming Help**
+- **Personal Life Management**
+- **Entertainment**
 
 **One `alias.py` file + custom AI engine - no API keys, no costs, no limits!**
 
-## 🚀 Quick Start
+## Quick Start
 
 ```bash
 # Clone and run
@@ -33,19 +33,19 @@ python alias.py fun        # Start in Fun mode
 
 **Windows:** Just double-click `run.bat`
 
-### ⚠️ **Important: What You Get Out-of-the-Box**
+### Important: What You Get Out-of-the-Box
 
 Running `python alias.py` immediately gives you:
-- ✅ **A fully functional AI engine** (built by us!)
-- ✅ **Intelligent context understanding** using embeddings
-- ✅ **Learning from conversations** - gets smarter over time
-- ✅ **Knowledge base** that grows with each interaction
-- ✅ **Works 100% offline** - no internet required
-- ✅ **Zero dependencies on external AI services**
+- **A fully functional AI engine** (built by us!)
+- **Intelligent context understanding** using embeddings
+- **Learning from conversations** - gets smarter over time
+- **Knowledge base** that grows with each interaction
+- **Works 100% offline** - no internet required
+- **Zero dependencies on external AI services**
 
 **This is REAL AI, not just keyword matching!**
 
-### 🚀 **Want Even More Power?**
+### Want Even More Power?
 
 Our built-in engine is great, but you can add MORE:
 
@@ -65,9 +65,9 @@ pip install SpeechRecognition pyttsx3 pyaudio
 
 **Our built-in engine works great standalone. These are just optional enhancements!**
 
-## ✨ Features
+##  Features
 
-### 🧠 **Built-In Free AI Engine**
+###  **Built-In Free AI Engine**
 - Sentence embedding-based understanding
 - Context-aware response generation
 - Learns from every conversation
@@ -76,7 +76,7 @@ pip install SpeechRecognition pyttsx3 pyaudio
 - No external AI services needed
 - Gets smarter the more you use it!
 
-### 📊 **What You Get Out-of-the-Box**
+###  **What You Get Out-of-the-Box**
 - Professional Tkinter GUI with dark theme
 - Intelligent conversational AI
 - Context understanding and memory
@@ -85,12 +85,12 @@ pip install SpeechRecognition pyttsx3 pyaudio
 - Session tracking
 - Persistent learning
 
-### 🤖 **Optional Enhancements** (Not Required!)
+### **Optional Enhancements** (Not Required!)
 - Add Ollama for GPT-like capabilities
 - Install Transformers for advanced models
 - Enable voice features for hands-free use
 
-### 🆓 **Zero Cost Forever**
+### **Zero Cost Forever**
 - No API fees or subscriptions
 - No usage limits  
 - No external dependencies for AI
@@ -98,7 +98,7 @@ pip install SpeechRecognition pyttsx3 pyaudio
 - **Built-in intelligent AI engine included!**
 - Optional enhancements available (Ollama/Transformers)
 
-### 🤖 **7 AI Modes**
+###  **7 AI Modes**
 - **Assistant** - General help for anything
 - **Study** - Academic tutoring with subject specialization
 - **Work** - Professional productivity tasks
@@ -107,16 +107,16 @@ pip install SpeechRecognition pyttsx3 pyaudio
 - **Tech** - Programming and debugging
 - **Fun** - Entertainment and games
 
-### 🎙️ **Voice Capabilities** (Optional)
+###  **Voice Capabilities** (Optional)
 - Wake word detection ("ALIAS", "Hey ALIAS", "OK ALIAS")
 - Continuous voice listening
 - Text-to-speech responses
 - Hands-free operation
 
-### 🛠️ **Built-in Tools**
+###  **Built-in Tools**
 Study, Work, Creative, Tech, Personal tools + Quick actions (web search, weather, news, system info)
 
-## 💡 Usage Examples
+##  Usage Examples
 
 ```bash
 # Voice commands
@@ -131,7 +131,7 @@ Ctrl+M     - Cycle through modes
 F1         - Show help
 ```
 
-## 🏗️ System Requirements
+##  System Requirements
 
 - **Python**: 3.8 or higher
 - **OS**: Windows, macOS, or Linux
@@ -139,7 +139,7 @@ F1         - Show help
 - **Microphone**: Optional, for voice features
 - **Internet**: Optional with local AI models
 
-## 📁 Repository Structure
+##  Repository Structure
 
 ```
 ALIAS/
@@ -161,17 +161,15 @@ ALIAS/
 - `ai_engine.py` - Our custom-built AI (the "engine"!)
 - Knowledge files are created on first run (auto-saved)
 
-## 🤝 Contributing
+##  Contributing
 
 Contributions welcome! See [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md) for guidelines.
 
-## 📄 License
+##  License
 
 MIT License - See [LICENSE](LICENSE) file.
 
-## 🎯 Why ALIAS?
-
-## 🎯 Why ALIAS?
+##  Why ALIAS?
 
 ### What ALIAS Actually Is
 **ALIAS is a complete free AI system** that includes:
@@ -182,19 +180,19 @@ MIT License - See [LICENSE](LICENSE) file.
 - Voice integration setup
 - **Works out-of-the-box with NO external services**
 
-### For Students 🎓
+### For Students 
 - Zero cost - no API subscriptions
 - Actual working AI included
 - Learns and helps with homework
 - Privacy-focused (all local)
 
-### For Developers 💼
+### For Developers 
 - Real AI engine to study and modify
 - Multi-backend support
 - Easy to customize and extend
 - Educational codebase
 
-### For Everyone 🌍
+### For Everyone
 - No payment barriers
 - No internet required
 - Open source and transparent
@@ -204,7 +202,7 @@ MIT License - See [LICENSE](LICENSE) file.
 
 **Making advanced AI assistance free and accessible to everyone, everywhere!**
 
-## 🔬 How Our AI Engine Works
+##  How Our AI Engine Works
 
 Our built-in AI engine uses modern techniques without requiring massive models:
 

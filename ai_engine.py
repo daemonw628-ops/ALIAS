@@ -346,11 +346,11 @@ class FreeAIEngine:
     """
     
     def __init__(self):
-        print("🤖 Initializing Free AI Engine...")
+        print("Initializing Free AI Engine...")
         self.embedder = SentenceEmbedder()
         self.knowledge_base = KnowledgeBase(self.embedder)
         self.generator = ResponseGenerator(self.embedder, self.knowledge_base)
-        print("✅ Free AI Engine Ready!")
+        print("Free AI Engine Ready!")
     
     def get_response(self, message: str, mode: str = "Assistant", subject: str = "General") -> str:
         """
@@ -375,7 +375,7 @@ class FreeAIEngine:
         """Save all learned knowledge"""
         self.embedder.save()
         self.knowledge_base.save()
-        print("💾 AI knowledge saved!")
+        print("AI knowledge saved!")
     
     def get_stats(self) -> Dict:
         """Get engine statistics"""
@@ -402,13 +402,13 @@ if __name__ == "__main__":
     ]
     
     for msg in test_messages:
-        print(f"\n👤 User: {msg}")
+        print(f"\nUser: {msg}")
         response = engine.get_response(msg)
-        print(f"🤖 ALIAS: {response}")
+        print(f"ALIAS: {response}")
     
     # Save learned knowledge
     engine.save_state()
     
     # Show stats
     stats = engine.get_stats()
-    print(f"\n📊 Engine Stats: {stats}")
+    print(f"\nEngine Stats: {stats}")

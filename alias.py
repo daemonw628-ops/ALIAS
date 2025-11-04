@@ -559,7 +559,7 @@ class ALIAS:
         ])
         
         # Quick Actions
-        self.create_tool_section(parent, "⚡ Quick Actions", [
+        self.create_tool_section(parent, "Quick Actions", [
             ("Web Search", self.web_search),
             ("Weather", lambda: self.send_direct_message("What's the weather?")),
             ("News", lambda: self.send_direct_message("Latest news headlines")),
@@ -1075,7 +1075,7 @@ class ALIAS:
         enhance_frame.pack(fill='both', expand=True, padx=20, pady=10)
         
         instructions = [
-            "🚀 For Better AI Responses:",
+            "For Better AI Responses:",
             "",
             "• Install Ollama: https://ollama.ai",
             "  Then run: ollama pull llama2",
