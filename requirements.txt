@@ -3,6 +3,9 @@
 requests>=2.25.0
 numpy>=1.19.0
 
+# Optional: Enhanced web search
+# search-engines>=0.2.4  # Multi-engine scraping (Google, Bing, Yahoo, etc.)
+
 # Optional: Voice features
 # SpeechRecognition>=3.8.1
 # pyttsx3>=2.90

@@ -76,6 +76,13 @@ pip install SpeechRecognition pyttsx3 pyaudio
 - No external AI services needed
 - Gets smarter the more you use it!
 
+### 🔍 **Multi-Source Web Search**
+- **DuckDuckGo** - Built-in, always free, zero setup
+- **SearchApi.io** - Optional, 100 free searches/month ([get free key](https://www.searchapi.io/))
+- **search-engines library** - Optional, unlimited multi-source scraping
+- **Auto-fallback** - Tries multiple sources automatically
+- See [docs/SEARCH_ENGINE_GUIDE.md](docs/SEARCH_ENGINE_GUIDE.md) for details
+
 ###  **What You Get Out-of-the-Box**
 - Professional Tkinter GUI with dark theme
 - Intelligent conversational AI

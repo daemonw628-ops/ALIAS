@@ -17,6 +17,13 @@ import requests
 from urllib.parse import quote
 from html import unescape
 
+# Import our enhanced search engine
+try:
+    from search_engines_api import FreeSearchEngine
+    ENHANCED_SEARCH_AVAILABLE = True
+except ImportError:
+    ENHANCED_SEARCH_AVAILABLE = False
+
 
 class SentenceEmbedder:
     """
@@ -418,14 +425,23 @@ class ResponseGenerator:
 
 class WebSearchTool:
     """
-    Free web search using DuckDuckGo Instant Answer API
-    No API keys required, better results than Wikipedia
+    Multi-source free web search with auto-fallback
+    Supports: DuckDuckGo, SearchApi.io, search-engines library
+    No API keys required for basic usage (DuckDuckGo always works)
     """
     
     def __init__(self):
         self.headers = {
             'User-Agent': 'ALIAS/1.0 (Educational AI Assistant; https://github.com/daemonw628-ops/ALIAS)'
         }
+        
+        # Use enhanced search engine if available, otherwise fall back to DuckDuckGo only
+        if ENHANCED_SEARCH_AVAILABLE:
+            self.search_engine = FreeSearchEngine()
+            print("✅ Multi-source search engine initialized")
+        else:
+            self.search_engine = None
+            print("ℹ️  Using DuckDuckGo only (install search_engines_api.py for more sources)")
     
     def search_duckduckgo(self, query: str) -> Dict[str, str]:
         """Search DuckDuckGo Instant Answer API for information"""
@@ -480,7 +496,14 @@ class WebSearchTool:
         return {'answer': ''}
     
     def search_and_summarize(self, query: str) -> str:
-        """Search and return a clean summary"""
+        """Search and return a clean summary using best available source"""
+        # Use enhanced multi-source search if available
+        if self.search_engine:
+            result = self.search_engine.search_and_format(query)
+            if result:
+                return result
+        
+        # Fall back to DuckDuckGo
         result = self.search_duckduckgo(query)
         
         if result.get('answer'):
@@ -490,6 +513,24 @@ class WebSearchTool:
             return summary
         
         return ""
+    
+    def set_searchapi_key(self, api_key: str):
+        """
+        Enable SearchApi.io for enhanced search results
+        Free tier: 100 searches/month, no credit card
+        Get key at: https://www.searchapi.io/
+        """
+        if self.search_engine:
+            self.search_engine.set_searchapi_key(api_key)
+            print("✅ SearchApi.io enabled - 100 free searches/month active")
+        else:
+            print("⚠️  Enhanced search engine not available")
+    
+    def get_available_engines(self) -> List[str]:
+        """Get list of available search engines"""
+        if self.search_engine:
+            return self.search_engine.get_available_engines()
+        return ["DuckDuckGo Instant Answer (always free)"]
 
 
 class FreeAIEngine:
