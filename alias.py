@@ -1295,6 +1295,8 @@ everywhere, with zero barriers and zero costs.
 
 def main():
     """Main entry point for ALIAS"""
+    import sys
+    
     try:
         # Check for required imports
         try:
@@ -1302,8 +1304,23 @@ def main():
         except ImportError:
             pass
         
+        # Parse command line arguments for starting mode
+        start_mode = "Assistant"  # Default
+        if len(sys.argv) > 1:
+            mode_arg = sys.argv[1].title()
+            valid_modes = ["Assistant", "Study", "Work", "Creative", "Personal", "Tech", "Fun"]
+            if mode_arg in valid_modes:
+                start_mode = mode_arg
+            else:
+                print(f"Invalid mode: {sys.argv[1]}")
+                print(f"Valid modes: {', '.join(valid_modes)}")
+                print("Starting in Assistant mode...")
+        
         # Initialize and run ALIAS
         app = ALIAS()
+        app.current_mode = start_mode
+        app.mode_var.set(start_mode)
+        app.mode_desc_label.config(text=app.modes[start_mode])
         app.run()
         
     except Exception as e:

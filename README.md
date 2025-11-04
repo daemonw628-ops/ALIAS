@@ -21,7 +21,17 @@ ALIAS is your complete digital assistant with **zero costs forever**:
 git clone https://github.com/daemonw628-ops/ALIAS.git
 cd ALIAS
 python alias.py
+
+# Or start in a specific mode:
+python alias.py study      # Start in Study mode
+python alias.py work       # Start in Work mode
+python alias.py creative   # Start in Creative mode
+python alias.py tech       # Start in Tech mode
+python alias.py personal   # Start in Personal mode
+python alias.py fun        # Start in Fun mode
 ```
+
+**Windows:** Just double-click `run.bat`
 
 ### ⚠️ **Important: What You Get Out-of-the-Box**
 

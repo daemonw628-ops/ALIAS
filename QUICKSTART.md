@@ -28,6 +28,14 @@ chmod +x run.sh
 **Or run directly:**
 ```bash
 python alias.py
+
+# Start in a specific mode:
+python alias.py study      # Study mode
+python alias.py work       # Work mode
+python alias.py creative   # Creative mode
+python alias.py tech       # Tech mode
+python alias.py personal   # Personal mode
+python alias.py fun        # Fun mode
 ```
 
 ### Step 3: Run tests (verify it works)
@@ -49,6 +57,11 @@ pip install -r requirements.txt
 # Run the app
 .\run.bat
 # Or: python alias.py
+
+# Start in a specific mode:
+python alias.py study
+python alias.py work
+python alias.py creative
 
 # Run tests
 python test_ai.py
