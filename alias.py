@@ -206,9 +206,10 @@ class FreeAIEngine:
         raise Exception("Groq not configured")
     
     def get_pattern_response(self, message, mode):
-        """Pattern matching response"""
+        """Pattern matching response with better fallback"""
         message_lower = message.lower()
         
+        # Try to match patterns
         for pattern, responses in self.patterns.items():
             if re.search(pattern, message_lower, re.IGNORECASE):
                 response = random.choice(responses)
@@ -229,7 +230,32 @@ class FreeAIEngine:
                 
                 return response
         
-        return random.choice(self.patterns[r'.*'])
+        # Better fallback - try to be helpful based on message content
+        return self.generate_smart_fallback(message, mode)
+    
+    def generate_smart_fallback(self, message, mode):
+        """Generate a smart response when no pattern matches"""
+        # Extract key words from the message
+        words = re.findall(r'\b\w+\b', message.lower())
+        key_words = [w for w in words if len(w) > 3 and w not in ['what', 'when', 'where', 'which', 'that', 'this', 'have', 'with', 'from', 'they', 'been', 'were']]
+        
+        if not key_words:
+            key_words = ['that']
+        
+        topic = ' '.join(key_words[:3]) if len(key_words) > 0 else 'your question'
+        
+        # Generate response based on mode
+        responses = {
+            "Assistant": f"I'd be happy to help you with {topic}. Could you provide more details or ask a specific question?",
+            "Study": f"I can help you learn about {topic}. What specifically would you like to understand better?",
+            "Work": f"Let me assist you with {topic}. What's the business objective or task you need help with?",
+            "Creative": f"Interesting idea about {topic}! Let's explore this creatively. What direction would you like to take?",
+            "Tech": f"I can help with {topic}. Could you share more details about the technical challenge?",
+            "Personal": f"I'm here to help with {topic}. What aspect would you like to focus on?",
+            "Fun": f"That's interesting! Let's talk about {topic}. What would you like to know?"
+        }
+        
+        return responses.get(mode, responses["Assistant"])
     
     def create_mode_prompt(self, message, mode):
         """Create mode-specific prompts"""
