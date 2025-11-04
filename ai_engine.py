@@ -418,8 +418,8 @@ class ResponseGenerator:
 
 class WebSearchTool:
     """
-    Free web search using Wikipedia API
-    No API keys required
+    Free web search using DuckDuckGo Instant Answer API
+    No API keys required, better results than Wikipedia
     """
     
     def __init__(self):
@@ -427,43 +427,51 @@ class WebSearchTool:
             'User-Agent': 'ALIAS/1.0 (Educational AI Assistant; https://github.com/daemonw628-ops/ALIAS)'
         }
     
-    def search_wikipedia(self, query: str) -> Dict[str, str]:
-        """Search Wikipedia for information"""
+    def search_duckduckgo(self, query: str) -> Dict[str, str]:
+        """Search DuckDuckGo Instant Answer API for information"""
         try:
-            # Wikipedia API - free, no API key needed
-            search_url = f"https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch={quote(query)}&format=json&srlimit=1"
-            search_response = requests.get(search_url, headers=self.headers, timeout=5)
+            # DuckDuckGo Instant Answer API - free, no API key needed, great results
+            api_url = f"https://api.duckduckgo.com/?q={quote(query)}&format=json&no_html=1&skip_disambig=1"
+            response = requests.get(api_url, headers=self.headers, timeout=5)
             
-            if search_response.status_code != 200:
+            if response.status_code != 200:
                 return {'answer': ''}
             
-            search_data = search_response.json()
+            data = response.json()
             
-            if not search_data.get('query', {}).get('search'):
-                return {'answer': ''}
+            # Try Abstract (best for informational queries)
+            if data.get('Abstract'):
+                return {
+                    'answer': unescape(data['Abstract']),
+                    'source': data.get('AbstractURL', ''),
+                    'title': data.get('Heading', query)
+                }
             
-            # Get the first result's page title
-            page_title = search_data['query']['search'][0]['title']
+            # Try Answer (for quick facts)
+            if data.get('Answer'):
+                answer_text = unescape(data['Answer'])
+                return {
+                    'answer': answer_text,
+                    'source': data.get('AbstractURL', ''),
+                    'title': query
+                }
             
-            # Get page summary
-            summary_url = f"https://en.wikipedia.org/w/api.php?action=query&prop=extracts&exintro&explaintext&titles={quote(page_title)}&format=json"
-            summary_response = requests.get(summary_url, headers=self.headers, timeout=5)
+            # Try Definition
+            if data.get('Definition'):
+                return {
+                    'answer': data['Definition'],
+                    'source': data.get('DefinitionURL', ''),
+                    'title': query
+                }
             
-            if summary_response.status_code != 200:
-                return {'answer': ''}
-            
-            summary_data = summary_response.json()
-            pages = summary_data.get('query', {}).get('pages', {})
-            
-            for page_id, page_data in pages.items():
-                extract = page_data.get('extract', '')
-                if extract:
-                    # Return first 500 characters
-                    answer = extract[:500] + ('...' if len(extract) > 500 else '')
+            # Try RelatedTopics for additional info
+            if data.get('RelatedTopics') and len(data['RelatedTopics']) > 0:
+                first_topic = data['RelatedTopics'][0]
+                if isinstance(first_topic, dict) and first_topic.get('Text'):
                     return {
-                        'answer': answer,
-                        'source': f"https://en.wikipedia.org/wiki/{quote(page_title.replace(' ', '_'))}",
-                        'title': page_title
+                        'answer': first_topic['Text'],
+                        'source': first_topic.get('FirstURL', ''),
+                        'title': query
                     }
             
         except Exception as e:
@@ -473,7 +481,7 @@ class WebSearchTool:
     
     def search_and_summarize(self, query: str) -> str:
         """Search and return a clean summary"""
-        result = self.search_wikipedia(query)
+        result = self.search_duckduckgo(query)
         
         if result.get('answer'):
             summary = f"[Web Search Result]\n\n{result['answer']}"
@@ -506,27 +514,31 @@ class FreeAIEngine:
         try:
             ml = message.lower()
             
-            # Check if query needs web search - ONLY for time-sensitive or obscure topics
+            # Check if query needs web search - for time-sensitive or real-time info
             search_triggers = [
-                'weather', 'news', 'latest', 'current events', 'today', 
-                'price of', 'cost of', 'what is happening', 'stock price',
-                'score', 'election', 'who won', 'breaking news', 'right now'
+                'weather', 'news', 'latest', 'current', 'today', 'now',
+                'price', 'cost', 'stock', 'bitcoin', 'cryptocurrency',
+                'score', 'election', 'breaking', 'happening',
+                'update', 'recent', 'this week', 'this month', 'this year'
             ]
             
-            # Common knowledge topics that DON'T need web search
-            common_knowledge = [
-                'capital', 'president', 'wrote', 'author', 'shakespeare', 'washington',
-                'photosynthesis', 'gravity', 'dna', 'rain', 'water', 'earth', 'sun',
-                'math', 'calculate', 'equation', 'plus', 'minus', 'times', 'divided',
-                'what is 2', 'what is 1', 'simple', 'basic',
-                'french revolution', 'louis', 'king'
+            # Common knowledge that should use our direct answers (no web search needed)
+            skip_web_search_terms = [
+                # Basic facts we have built-in
+                'capital of france', 'romeo and juliet', 'shakespeare',
+                'first president', 'george washington', 'photosynthesis',
+                'gravity', 'what is dna', 'causes rain', 'french revolution',
+                # Math patterns
+                'what is 1', 'what is 2', 'what is 3', 'what is 4', 'what is 5',
+                'what is 6', 'what is 7', 'what is 8', 'what is 9',
+                '+ ', '- ', '* ', '/ ', 'plus', 'minus', 'times', 'divided'
             ]
             
             # Only trigger web search for time-sensitive queries
             needs_search = any(trigger in ml for trigger in search_triggers)
             
-            # Skip search if it's common knowledge
-            if any(term in ml for term in common_knowledge):
+            # Skip search if it's a query we have direct answers for
+            if any(term in ml for term in skip_web_search_terms):
                 needs_search = False
             
             # Skip search for ALIAS-related queries and self-identification (use local knowledge)
