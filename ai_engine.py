@@ -169,6 +169,19 @@ class KnowledgeBase:
             "For study help, tell me the subject and what you need to understand.",
             "I learn from our conversations to provide better assistance.",
             "ALIAS is a free, open-source AI assistant that requires no API keys or internet connection to function.",
+            
+            # Common knowledge facts
+            "The capital of France is Paris, which is also the largest city in France.",
+            "William Shakespeare wrote Romeo and Juliet around 1594-1596. He was an English playwright and poet.",
+            "George Washington was the first president of the United States, serving from 1789 to 1797.",
+            "DNA (deoxyribonucleic acid) is the molecule that contains genetic instructions for all living organisms.",
+            "Photosynthesis is the process plants use to convert light energy into chemical energy (food) using chlorophyll.",
+            "Gravity is a fundamental force of nature that attracts objects with mass toward each other.",
+            "Rain occurs when water vapor in clouds condenses into droplets heavy enough to fall to Earth.",
+            "The Earth takes approximately 365.25 days to complete one orbit around the Sun.",
+            "Water has the chemical formula H2O - two hydrogen atoms bonded to one oxygen atom.",
+            "The speed of light in a vacuum is exactly 299,792,458 meters per second (about 186,282 miles per second).",
+            "King Louis XVI was the last king of France before the French Revolution. He was executed in 1793.",
         ]
         
         for text in base_knowledge:
@@ -313,9 +326,50 @@ class ResponseGenerator:
             # Return direct answer about ALIAS
             return "I'm ALIAS - Advanced Learning Intelligence Assistant System. I'm a free, open-source AI assistant designed to help you with studying, work, creative projects, programming, and personal tasks. I work completely offline and require no API keys or internet connection!"
         
+        # Direct factual answers for common questions
         if ('french revolution' in ml) or ('french' in ml and 'king' in ml) or ('king' in ml and 'revolution' in ml) or (('king' in ml or 'kings' in ml) and ('name' in ml)):
-            # Directly return factual answer
             return "The king during the French Revolution was King Louis XVI (Louis-Auguste)."
+        
+        if 'capital' in ml and 'france' in ml:
+            return "The capital of France is Paris."
+        
+        if ('shakespeare' in ml or 'wrote' in ml or 'author' in ml) and ('romeo' in ml or 'juliet' in ml):
+            return "William Shakespeare wrote Romeo and Juliet around 1594-1596."
+        
+        if ('first' in ml and 'president' in ml) or ('washington' in ml and 'president' in ml):
+            return "George Washington was the first president of the United States, serving from 1789 to 1797."
+        
+        if ('photosynthesis' in ml or 'photosynthesize' in ml) and ('what' in ml or 'explain' in ml or 'define' in ml):
+            return "Photosynthesis is the process by which plants use sunlight, water, and carbon dioxide to create oxygen and energy in the form of sugar (glucose)."
+        
+        if 'gravity' in ml and ('what' in ml or 'how' in ml or 'explain' in ml or 'work' in ml):
+            return "Gravity is a fundamental force of nature that attracts objects with mass toward each other. The more massive an object, the stronger its gravitational pull."
+        
+        if ('what' in ml and 'dna' in ml) or ('dna' in ml and ('explain' in ml or 'define' in ml)):
+            return "DNA (deoxyribonucleic acid) is the molecule that contains the genetic instructions for all living organisms. It's shaped like a double helix and carries hereditary information."
+        
+        if ('rain' in ml or 'raining' in ml) and ('cause' in ml or 'why' in ml or 'how' in ml or 'what' in ml):
+            return "Rain is caused when water vapor in the atmosphere condenses into water droplets inside clouds. When these droplets become heavy enough, they fall to Earth as precipitation."
+        
+        # Simple math calculations
+        math_match = re.search(r'what\s+is\s+(\d+)\s*([+\-*/])\s*(\d+)', ml)
+        if math_match:
+            num1, op, num2 = int(math_match.group(1)), math_match.group(2), int(math_match.group(3))
+            if op == '+':
+                result = num1 + num2
+                return f"{num1} + {num2} = {result}"
+            elif op == '-':
+                result = num1 - num2
+                return f"{num1} - {num2} = {result}"
+            elif op == '*' or op == '×':
+                result = num1 * num2
+                return f"{num1} × {num2} = {result}"
+            elif op == '/':
+                if num2 != 0:
+                    result = num1 / num2
+                    return f"{num1} ÷ {num2} = {result}"
+                else:
+                    return "Cannot divide by zero!"
 
         # Quick handling for household/task intents
         if re.search(r"\b(add|create|task|todo|remind|reminder)\b", ml) or re.search(r"\bclean\b|\btidy\b|\bdeclutter\b", ml):
@@ -452,29 +506,27 @@ class FreeAIEngine:
         try:
             ml = message.lower()
             
-            # Check if query needs web search
+            # Check if query needs web search - ONLY for time-sensitive or obscure topics
             search_triggers = [
-                'weather', 'news', 'latest', 'current', 'today', 'now',
+                'weather', 'news', 'latest', 'current events', 'today', 
                 'price of', 'cost of', 'what is happening', 'stock price',
-                'score', 'election', 'who won', 'when is', 'what time'
+                'score', 'election', 'who won', 'breaking news', 'right now'
             ]
             
-            # Check for informational queries that would benefit from web search
-            info_patterns = [
-                r'\bwho (is|was|were)\b',
-                r'\bwhat (is|was|were|are)\b',
-                r'\btell me about\b',
-                r'\bexplain\b.*\b(to me|about)\b',
-                r'\binformation (about|on)\b',
-                r'\bdefine\b',
-                r'\bdefinition of\b'
+            # Common knowledge topics that DON'T need web search
+            common_knowledge = [
+                'capital', 'president', 'wrote', 'author', 'shakespeare', 'washington',
+                'photosynthesis', 'gravity', 'dna', 'rain', 'water', 'earth', 'sun',
+                'math', 'calculate', 'equation', 'plus', 'minus', 'times', 'divided',
+                'what is 2', 'what is 1', 'simple', 'basic',
+                'french revolution', 'louis', 'king'
             ]
             
+            # Only trigger web search for time-sensitive queries
             needs_search = any(trigger in ml for trigger in search_triggers)
-            needs_search = needs_search or any(re.search(pattern, ml) for pattern in info_patterns)
             
-            # Skip search for queries we have direct answers for
-            if ('french revolution' in ml) or (('king' in ml or 'kings' in ml) and ('name' in ml)):
+            # Skip search if it's common knowledge
+            if any(term in ml for term in common_knowledge):
                 needs_search = False
             
             # Skip search for ALIAS-related queries and self-identification (use local knowledge)
@@ -482,13 +534,13 @@ class FreeAIEngine:
                (re.search(r'\bwho are you\b|\bwhat are you\b|\bidentify yourself\b|\btell me about yourself\b', ml)):
                 needs_search = False
             
-            # Try web search for real-time/factual info
+            # Try web search ONLY for time-sensitive info
             if needs_search:
                 search_result = self.search_tool.search_and_summarize(message)
                 if search_result:
                     return search_result
             
-            # Normal AI response
+            # Normal AI response (uses knowledge base first, then generates)
             response = self.generator.generate_response(message, mode)
             return response
         except Exception as e:
