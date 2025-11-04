@@ -392,7 +392,7 @@ class ALIAS:
         left_frame.pack(side='left', fill='y', padx=20)
         
         # ALIAS title
-        title_label = tk.Label(left_frame, text="🆓 FREE J.A.R.V.I.S.", 
+        title_label = tk.Label(left_frame, text="🤖 ALIAS", 
                               font=('Arial', 24, 'bold'), 
                               fg=self.colors['accent_green'], 
                               bg=self.colors['bg_secondary'])
@@ -404,7 +404,7 @@ class ALIAS:
                                  bg=self.colors['bg_secondary'])
         subtitle_label.pack(anchor='w')
         
-        tech_label = tk.Label(left_frame, text="Just A Rather Very Intelligent System", 
+        tech_label = tk.Label(left_frame, text="Advanced Learning Intelligence Assistant System", 
                              font=('Arial', 10, 'italic'), 
                              fg=self.colors['text_secondary'], 
                              bg=self.colors['bg_secondary'])
@@ -722,13 +722,14 @@ class ALIAS:
         )
         self.input_text.pack(side='left', fill='both', expand=True, padx=10, pady=10)
         self.input_text.bind('<Control-Return>', lambda e: self.send_message())
+        self.input_text.bind('<Return>', lambda e: self.send_message_on_enter(e))
         
         # Button panel
         button_panel = tk.Frame(input_frame, bg=self.colors['bg_panel'])
         button_panel.pack(side='right', fill='y', padx=(0, 10), pady=10)
         
         # Send button
-        self.send_button = tk.Button(button_panel, text="Send\n(Ctrl+Enter)", 
+        self.send_button = tk.Button(button_panel, text="Send\n(Enter)", 
                                     command=self.send_message,
                                     bg=self.colors['accent_blue'], fg='black',
                                     font=('Arial', 11, 'bold'),
@@ -763,6 +764,14 @@ class ALIAS:
                                   font=('Arial', 9))
         self.status_bar.pack(side='bottom', fill='x')
     
+    def send_message_on_enter(self, event):
+        """Send message when Enter is pressed (Shift+Enter for new line)"""
+        if event.state & 0x1:  # Shift key is pressed
+            return  # Allow default behavior (new line)
+        else:
+            self.send_message()
+            return 'break'  # Prevent default Enter behavior
+    
     def send_message(self):
         """Send message to ALIAS"""
         message = self.input_text.get(1.0, tk.END).strip()
@@ -786,7 +795,7 @@ class ALIAS:
             
             self.root.after(0, lambda: self.add_ALIAS_response(response))
             self.root.after(0, lambda: self.status_bar.config(text="🆓 FREE ALIAS Online - Zero API costs!"))
-            self.root.after(0, lambda: self.send_button.config(state='normal', text="Send\n(Ctrl+Enter)"))
+            self.root.after(0, lambda: self.send_button.config(state='normal', text="Send\n(Enter)"))
             
             # Speak response if voice is enabled
             if VOICE_AVAILABLE and response:
@@ -798,7 +807,7 @@ class ALIAS:
             error_msg = f"I apologize, but I encountered an error: {str(e)}"
             self.root.after(0, lambda: self.add_ALIAS_response(error_msg))
             self.root.after(0, lambda: self.status_bar.config(text="Error occurred"))
-            self.root.after(0, lambda: self.send_button.config(state='normal', text="Send\n(Ctrl+Enter)"))
+            self.root.after(0, lambda: self.send_button.config(state='normal', text="Send\n(Enter)"))
     
     def add_user_message(self, message):
         """Add user message to chat"""
