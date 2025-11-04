@@ -392,7 +392,7 @@ class ALIAS:
         left_frame.pack(side='left', fill='y', padx=20)
         
         # ALIAS title
-        title_label = tk.Label(left_frame, text="🤖 ALIAS", 
+        title_label = tk.Label(left_frame, text="🤖 A.L.I.A.S.", 
                               font=('Arial', 24, 'bold'), 
                               fg=self.colors['accent_green'], 
                               bg=self.colors['bg_secondary'])
@@ -404,7 +404,7 @@ class ALIAS:
                                  bg=self.colors['bg_secondary'])
         subtitle_label.pack(anchor='w')
         
-        tech_label = tk.Label(left_frame, text="Advanced Learning Intelligence Assistant System", 
+        tech_label = tk.Label(left_frame, text="Advanced Learning Intelligent Assistant System", 
                              font=('Arial', 10, 'italic'), 
                              fg=self.colors['text_secondary'], 
                              bg=self.colors['bg_secondary'])
