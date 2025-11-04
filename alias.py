@@ -496,9 +496,6 @@ class ALIAS:
         main_frame = tk.Frame(self.root, bg=self.colors['bg_primary'])
         main_frame.pack(fill='both', expand=True, padx=10, pady=(0, 10))
         
-        # Left sidebar - Tools and capabilities
-        self.create_sidebar(main_frame)
-        
         # Center - Chat area
         self.create_chat_area(main_frame)
         
