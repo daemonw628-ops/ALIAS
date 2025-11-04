@@ -157,7 +157,8 @@ class KnowledgeBase:
     def _initialize_base_knowledge(self):
         """Initialize with basic helpful responses"""
         base_knowledge = [
-            "I'm ALIAS, an AI assistant designed to help you with various tasks.",
+            "ALIAS stands for Advanced Learning Intelligence Assistant System. I'm an AI assistant designed to help you with various tasks.",
+            "I'm ALIAS (Advanced Learning Intelligence Assistant System), your free AI companion that works completely offline.",
             "I can help with studying, work, creative projects, programming, and personal tasks.",
             "For math problems, please share the equation and I'll help solve it.",
             "I can explain concepts by breaking them down into simple parts.",
@@ -167,6 +168,7 @@ class KnowledgeBase:
             "I can help write essays, stories, emails, and other documents.",
             "For study help, tell me the subject and what you need to understand.",
             "I learn from our conversations to provide better assistance.",
+            "ALIAS is a free, open-source AI assistant that requires no API keys or internet connection to function.",
         ]
         
         for text in base_knowledge:
@@ -304,6 +306,13 @@ class ResponseGenerator:
         # Quick direct factual handling for short, specific historic or definition queries
         # (check before general KB search to ensure direct answers)
         ml = message.lower()
+        
+        # Handle ALIAS-related queries and self-identification
+        if (re.search(r'\balias\b', ml) and re.search(r'\b(what|stand|mean|is|about|can)\b', ml)) or \
+           (re.search(r'\bwho are you\b|\bwhat are you\b|\bidentify yourself\b|\btell me about yourself\b', ml)):
+            # Return direct answer about ALIAS
+            return "I'm ALIAS - Advanced Learning Intelligence Assistant System. I'm a free, open-source AI assistant designed to help you with studying, work, creative projects, programming, and personal tasks. I work completely offline and require no API keys or internet connection!"
+        
         if ('french revolution' in ml) or ('french' in ml and 'king' in ml) or ('king' in ml and 'revolution' in ml) or (('king' in ml or 'kings' in ml) and ('name' in ml)):
             # Directly return factual answer
             return "The king during the French Revolution was King Louis XVI (Louis-Auguste)."
@@ -466,6 +475,11 @@ class FreeAIEngine:
             
             # Skip search for queries we have direct answers for
             if ('french revolution' in ml) or (('king' in ml or 'kings' in ml) and ('name' in ml)):
+                needs_search = False
+            
+            # Skip search for ALIAS-related queries and self-identification (use local knowledge)
+            if (re.search(r'\balias\b', ml) and re.search(r'\b(what|stand|mean|is|about|can)\b', ml)) or \
+               (re.search(r'\bwho are you\b|\bwhat are you\b|\bidentify yourself\b|\btell me about yourself\b', ml)):
                 needs_search = False
             
             # Try web search for real-time/factual info
