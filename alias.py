@@ -253,17 +253,16 @@ class ALIAS:
     Voice + Text + Multi-Mode + Study + Work + Everything
     """
     
-    def __init__(self):
+    def __init__(self, start_mode="Assistant"):
         """Initialize FREE ALIAS with all capabilities"""
         self.root = tk.Tk()
-        self.setup_gui()
         
         # Initialize free AI engine
         self.ai_engine = FreeAIEngine()
         
         # Core configuration
         self.conversation_history = []
-        self.current_mode = "Assistant"
+        self.current_mode = start_mode
         self.current_subject = "General"
         
         # Session tracking
@@ -288,8 +287,18 @@ class ALIAS:
             "Voice": "🎙️ Voice interaction mode"
         }
         
+        # Setup GUI (must come after modes are defined)
+        self.setup_gui()
+        
         # Load settings and initialize
         self.load_settings()
+        
+        # Set the starting mode after GUI is created
+        if start_mode != "Assistant":
+            self.mode_var.set(start_mode)
+            self.mode_desc_label.config(text=self.modes[start_mode])
+            self.mode_label.config(text=f"Mode: {start_mode}")
+        
         self.show_welcome()
     
     def setup_voice_components(self):
@@ -1317,10 +1326,7 @@ def main():
                 print("Starting in Assistant mode...")
         
         # Initialize and run ALIAS
-        app = ALIAS()
-        app.current_mode = start_mode
-        app.mode_var.set(start_mode)
-        app.mode_desc_label.config(text=app.modes[start_mode])
+        app = ALIAS(start_mode=start_mode)
         app.run()
         
     except Exception as e:
