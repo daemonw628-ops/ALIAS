@@ -73,7 +73,7 @@ class FreeAIEngine:
             try:
                 self.custom_engine = CustomFreeAIEngine()
                 self.backends.append('custom_free')
-                logger.info("✅ Custom Free AI Engine loaded - truly free AI active!")
+                logger.info("Custom Free AI Engine loaded - truly free AI active!")
             except Exception as e:
                 logger.warning(f"Custom engine failed: {e}")
         
@@ -277,14 +277,14 @@ class ALIAS:
         
         # All modes and capabilities
         self.modes = {
-            "Assistant": "🤖 General AI assistant for anything",
-            "Study": "📚 Academic tutoring and learning",
-            "Work": "💼 Professional productivity and tasks", 
-            "Creative": "🎨 Writing and creative projects",
-            "Personal": "🏠 Life management and planning",
-            "Tech": "💻 Programming and technical help",
-            "Fun": "🎮 Entertainment and casual chat",
-            "Voice": "🎙️ Voice interaction mode"
+            "Assistant": "General AI assistant for anything",
+            "Study": "Academic tutoring and learning",
+            "Work": "Professional productivity and tasks", 
+            "Creative": "Writing and creative projects",
+            "Personal": "Life management and planning",
+            "Tech": "Programming and technical help",
+            "Fun": "Entertainment and casual chat",
+            "Voice": "Voice interaction mode"
         }
         
         # Setup GUI (must come after modes are defined)
@@ -335,7 +335,7 @@ class ALIAS:
     
     def setup_gui(self):
         """Create the ultimate FREE ALIAS interface"""
-        self.root.title("🤖 FREE ALIAS - Advanced Learning Intelligence Assistant System")
+        self.root.title("FREE ALIAS - Advanced Learning Intelligence Assistant System")
         self.root.geometry("1400x900")
         self.root.configure(bg='#0a0a0a')
         
@@ -365,21 +365,21 @@ class ALIAS:
         self.root.bind('<Alt-F4>', lambda e: self.on_closing())
         
         # Start with welcome
-        self.add_ALIAS_message("🆓 FREE ALIAS is online and ready to assist you with anything!")
+        self.add_ALIAS_message("FREE ALIAS is online and ready to assist you with anything!")
         self.add_ALIAS_message(f"Using {self.ai_engine.current_backend.replace('_', ' ').title()} AI backend - completely free!")
         self.add_ALIAS_message("I can help with study, work, creativity, personal tasks, and more - no API costs!")
         if VOICE_AVAILABLE:
-            self.add_ALIAS_message("🎙️ Voice features are available. Press Ctrl+L to toggle listening.")
+            self.add_ALIAS_message("Voice features are available. Press Ctrl+L to toggle listening.")
         
         self.root.protocol("WM_DELETE_WINDOW", self.on_closing)
     
     def show_welcome(self):
         """Show welcome message"""
         backend_name = self.ai_engine.current_backend.replace('_', ' ').title()
-        self.add_ALIAS_message(f"🆓 FREE ALIAS Online - Using {backend_name} backend")
+        self.add_ALIAS_message(f"FREE ALIAS Online - Using {backend_name} backend")
         self.add_ALIAS_message("Advanced AI assistance with zero costs - for everyone, everywhere!")
         if VOICE_AVAILABLE:
-            self.add_ALIAS_message("🎙️ Voice features ready. Use wake words: 'ALIAS', 'Hey ALIAS', 'OK ALIAS'")
+            self.add_ALIAS_message("Voice features ready. Use wake words: 'ALIAS', 'Hey ALIAS', 'OK ALIAS'")
     
     def create_header(self):
         """Create the ALIAS header with all controls"""
@@ -392,7 +392,7 @@ class ALIAS:
         left_frame.pack(side='left', fill='y', padx=20)
         
         # ALIAS title
-        title_label = tk.Label(left_frame, text="🤖 A.L.I.A.S.", 
+        title_label = tk.Label(left_frame, text="A.L.I.A.S.", 
                               font=('Arial', 24, 'bold'), 
                               fg=self.colors['accent_green'], 
                               bg=self.colors['bg_secondary'])
@@ -468,7 +468,7 @@ class ALIAS:
             voice_frame = tk.Frame(right_frame, bg=self.colors['bg_secondary'])
             voice_frame.pack(side='top', pady=(10, 5))
             
-            self.voice_button = tk.Button(voice_frame, text="🎙️ Start Listening", 
+            self.voice_button = tk.Button(voice_frame, text="Start Listening", 
                                          command=self.toggle_voice_listening,
                                          bg=self.colors['accent_blue'], fg='black',
                                          font=('Arial', 10, 'bold'),
@@ -512,7 +512,7 @@ class ALIAS:
         sidebar_frame.pack_propagate(False)
         
         # Sidebar title
-        tk.Label(sidebar_frame, text="🛠️ ALIAS Capabilities", 
+        tk.Label(sidebar_frame, text="ALIAS Capabilities", 
                 font=('Arial', 14, 'bold'), 
                 fg=self.colors['accent_gold'], 
                 bg=self.colors['bg_panel']).pack(pady=(15, 20))
@@ -542,73 +542,73 @@ class ALIAS:
     def create_all_tools(self, parent):
         """Create all tool categories"""
         # Study Tools
-        self.create_tool_section(parent, "📚 Study & Learning", [
-            ("📝 Explain Concept", lambda: self.set_prompt("Explain this concept: ")),
-            ("🧮 Solve Problem", lambda: self.set_prompt("Help me solve: ")),
-            ("✅ Check Answer", lambda: self.set_prompt("Is this correct? ")),
-            ("🎯 Create Quiz", lambda: self.set_prompt(f"Create a quiz on {self.current_subject}")),
-            ("📖 Summarize", lambda: self.set_prompt("Summarize this: ")),
-            ("💡 Study Tips", lambda: self.set_prompt(f"Study tips for {self.current_subject}"))
+        self.create_tool_section(parent, "Study & Learning", [
+            ("Explain Concept", lambda: self.set_prompt("Explain this concept: ")),
+            ("Solve Problem", lambda: self.set_prompt("Help me solve: ")),
+            ("Check Answer", lambda: self.set_prompt("Is this correct? ")),
+            ("Create Quiz", lambda: self.set_prompt(f"Create a quiz on {self.current_subject}")),
+            ("Summarize", lambda: self.set_prompt("Summarize this: ")),
+            ("Study Tips", lambda: self.set_prompt(f"Study tips for {self.current_subject}"))
         ])
         
         # Work & Productivity
-        self.create_tool_section(parent, "💼 Work & Productivity", [
-            ("📧 Write Email", lambda: self.set_prompt("Write a professional email about: ")),
-            ("📊 Analyze Data", lambda: self.set_prompt("Analyze this data: ")),
-            ("📋 Create Plan", lambda: self.set_prompt("Create a plan for: ")),
-            ("🎯 Set Goals", lambda: self.set_prompt("Help me set goals for: ")),
-            ("⏰ Time Management", lambda: self.set_prompt("Time management tips for: ")),
-            ("📝 Write Report", lambda: self.set_prompt("Help me write a report on: "))
+        self.create_tool_section(parent, "Work & Productivity", [
+            ("Write Email", lambda: self.set_prompt("Write a professional email about: ")),
+            ("Analyze Data", lambda: self.set_prompt("Analyze this data: ")),
+            ("Create Plan", lambda: self.set_prompt("Create a plan for: ")),
+            ("Set Goals", lambda: self.set_prompt("Help me set goals for: ")),
+            ("Time Management", lambda: self.set_prompt("Time management tips for: ")),
+            ("Write Report", lambda: self.set_prompt("Help me write a report on: "))
         ])
         
         # Creative & Writing
-        self.create_tool_section(parent, "🎨 Creative & Writing", [
-            ("✍️ Write Story", lambda: self.set_prompt("Help me write a story about: ")),
-            ("🎨 Creative Ideas", lambda: self.set_prompt("Creative ideas for: ")),
-            ("📝 Edit Text", lambda: self.set_prompt("Edit and improve this: ")),
-            ("🎭 Character Dev", lambda: self.set_prompt("Develop a character who: ")),
-            ("🎵 Song Lyrics", lambda: self.set_prompt("Write lyrics about: ")),
-            ("💭 Brainstorm", lambda: self.set_prompt("Brainstorm ideas for: "))
+        self.create_tool_section(parent, "Creative & Writing", [
+            ("Write Story", lambda: self.set_prompt("Help me write a story about: ")),
+            ("Creative Ideas", lambda: self.set_prompt("Creative ideas for: ")),
+            ("Edit Text", lambda: self.set_prompt("Edit and improve this: ")),
+            ("Character Dev", lambda: self.set_prompt("Develop a character who: ")),
+            ("Song Lyrics", lambda: self.set_prompt("Write lyrics about: ")),
+            ("Brainstorm", lambda: self.set_prompt("Brainstorm ideas for: "))
         ])
         
         # Tech & Programming
-        self.create_tool_section(parent, "💻 Tech & Programming", [
-            ("💻 Code Help", lambda: self.set_prompt("Help with this code: ")),
-            ("🐛 Debug Issue", lambda: self.set_prompt("Debug this problem: ")),
-            ("🔧 Tool Recommend", lambda: self.set_prompt("Recommend tools for: ")),
-            ("📚 Learn Tech", lambda: self.set_prompt("How to learn: ")),
-            ("🏗️ Architecture", lambda: self.set_prompt("Design architecture for: ")),
-            ("🔍 Code Review", lambda: self.set_prompt("Review this code: "))
+        self.create_tool_section(parent, "Tech & Programming", [
+            ("Code Help", lambda: self.set_prompt("Help with this code: ")),
+            ("Debug Issue", lambda: self.set_prompt("Debug this problem: ")),
+            ("Tool Recommend", lambda: self.set_prompt("Recommend tools for: ")),
+            ("Learn Tech", lambda: self.set_prompt("How to learn: ")),
+            ("Architecture", lambda: self.set_prompt("Design architecture for: ")),
+            ("Code Review", lambda: self.set_prompt("Review this code: "))
         ])
         
         # Personal & Life
-        self.create_tool_section(parent, "🏠 Personal & Life", [
-            ("🏠 Life Planning", lambda: self.set_prompt("Help me plan: ")),
-            ("💰 Budget Help", lambda: self.set_prompt("Budget advice for: ")),
-            ("🍳 Meal Planning", lambda: self.set_prompt("Plan meals for: ")),
-            ("🏋️ Fitness Plan", lambda: self.set_prompt("Fitness plan for: ")),
-            ("🧘 Wellness Tips", lambda: self.set_prompt("Wellness tips for: ")),
-            ("📅 Schedule Help", lambda: self.set_prompt("Organize schedule for: "))
+        self.create_tool_section(parent, "Personal & Life", [
+            ("Life Planning", lambda: self.set_prompt("Help me plan: ")),
+            ("Budget Help", lambda: self.set_prompt("Budget advice for: ")),
+            ("Meal Planning", lambda: self.set_prompt("Plan meals for: ")),
+            ("Fitness Plan", lambda: self.set_prompt("Fitness plan for: ")),
+            ("Wellness Tips", lambda: self.set_prompt("Wellness tips for: ")),
+            ("Schedule Help", lambda: self.set_prompt("Organize schedule for: "))
         ])
         
         # Quick Actions
         self.create_tool_section(parent, "⚡ Quick Actions", [
-            ("🌐 Web Search", self.web_search),
-            ("📊 Weather", lambda: self.send_direct_message("What's the weather?")),
-            ("📰 News", lambda: self.send_direct_message("Latest news headlines")),
-            ("⏰ Time", self.get_time),
-            ("📁 Open Folder", self.open_folder),
-            ("🖥️ System Info", lambda: self.send_direct_message("System information"))
+            ("Web Search", self.web_search),
+            ("Weather", lambda: self.send_direct_message("What's the weather?")),
+            ("News", lambda: self.send_direct_message("Latest news headlines")),
+            ("Time", self.get_time),
+            ("Open Folder", self.open_folder),
+            ("System Info", lambda: self.send_direct_message("System information"))
         ])
         
         # Fun & Entertainment
-        self.create_tool_section(parent, "🎮 Fun & Entertainment", [
-            ("😂 Tell Joke", lambda: self.send_direct_message("Tell me a joke")),
-            ("🎲 Random Fact", lambda: self.send_direct_message("Random fun fact")),
-            ("🎬 Movie Rec", lambda: self.set_prompt("Recommend movies about: ")),
-            ("📚 Book Rec", lambda: self.set_prompt("Recommend books about: ")),
-            ("🎮 Game Ideas", lambda: self.set_prompt("Game ideas for: ")),
-            ("🎪 Entertain Me", lambda: self.send_direct_message("Entertain me"))
+        self.create_tool_section(parent, "Fun & Entertainment", [
+            ("Tell Joke", lambda: self.send_direct_message("Tell me a joke")),
+            ("Random Fact", lambda: self.send_direct_message("Random fun fact")),
+            ("Movie Rec", lambda: self.set_prompt("Recommend movies about: ")),
+            ("Book Rec", lambda: self.set_prompt("Recommend books about: ")),
+            ("Game Ideas", lambda: self.set_prompt("Game ideas for: ")),
+            ("Entertain Me", lambda: self.send_direct_message("Entertain me"))
         ])
     
     def create_tool_section(self, parent, title, tools):
@@ -656,7 +656,7 @@ class ALIAS:
         self.mode_label.pack(anchor='w', padx=5, pady=2)
         
         if VOICE_AVAILABLE:
-            self.voice_status_label = tk.Label(stats_frame, text="🎙️ Voice: Ready", 
+            self.voice_status_label = tk.Label(stats_frame, text="Voice: Ready", 
                                               fg=self.colors['accent_gold'], 
                                               bg=self.colors['bg_panel'],
                                               font=('Arial', 9))
@@ -739,7 +739,7 @@ class ALIAS:
         
         # Voice button (if available)
         if VOICE_AVAILABLE:
-            self.voice_input_button = tk.Button(button_panel, text="🎙️ Voice\nInput", 
+            self.voice_input_button = tk.Button(button_panel, text="Voice\nInput", 
                                                command=self.voice_input_once,
                                                bg=self.colors['accent_gold'], fg='black',
                                                font=('Arial', 10, 'bold'),
@@ -748,7 +748,7 @@ class ALIAS:
             self.voice_input_button.pack(pady=(0, 5))
         
         # Mode quick switch
-        tk.Button(button_panel, text="🔄 Mode\n(Ctrl+M)", 
+        tk.Button(button_panel, text="Mode\n(Ctrl+M)", 
                  command=self.cycle_mode,
                  bg=self.colors['bg_secondary'], fg=self.colors['text_primary'],
                  font=('Arial', 9),
@@ -757,7 +757,7 @@ class ALIAS:
     
     def create_status_bar(self):
         """Create the status bar"""
-        self.status_bar = tk.Label(self.root, text="🆓 FREE ALIAS Online - Zero API costs!", 
+        self.status_bar = tk.Label(self.root, text="FREE ALIAS Online - Zero API costs!", 
                                   relief=tk.SUNKEN, anchor='w',
                                   bg=self.colors['bg_secondary'], 
                                   fg=self.colors['accent_green'], 
@@ -794,7 +794,7 @@ class ALIAS:
             response = self.ai_engine.get_response(message, self.current_mode, self.current_subject)
             
             self.root.after(0, lambda: self.add_ALIAS_response(response))
-            self.root.after(0, lambda: self.status_bar.config(text="🆓 FREE ALIAS Online - Zero API costs!"))
+            self.root.after(0, lambda: self.status_bar.config(text="FREE ALIAS Online - Zero API costs!"))
             self.root.after(0, lambda: self.send_button.config(state='normal', text="Send\n(Enter)"))
             
             # Speak response if voice is enabled
@@ -827,7 +827,7 @@ class ALIAS:
         
         timestamp = datetime.datetime.now().strftime("%H:%M:%S")
         self.chat_display.insert(tk.END, f"[{timestamp}] ", 'timestamp')
-        self.chat_display.insert(tk.END, "🆓 FREE ALIAS: ", 'ALIAS')
+        self.chat_display.insert(tk.END, "FREE ALIAS: ", 'ALIAS')
         self.chat_display.insert(tk.END, f"{response}\n\n", 'normal')
         
         self.chat_display.see(tk.END)
@@ -839,7 +839,7 @@ class ALIAS:
         
         timestamp = datetime.datetime.now().strftime("%H:%M:%S")
         self.chat_display.insert(tk.END, f"[{timestamp}] ", 'timestamp')
-        self.chat_display.insert(tk.END, f"🆓 {message}\n\n", 'system')
+        self.chat_display.insert(tk.END, f"{message}\n\n", 'system')
         
         self.chat_display.see(tk.END)
         self.chat_display.config(state='disabled')
@@ -871,8 +871,8 @@ class ALIAS:
     def start_voice_listening(self):
         """Start continuous voice listening"""
         self.is_listening = True
-        self.voice_button.config(text="🔴 Stop Listening", bg='#ff4444')
-        self.voice_status_label.config(text="🎙️ Voice: Listening")
+        self.voice_button.config(text="Stop Listening", bg='#ff4444')
+        self.voice_status_label.config(text="Voice: Listening")
         
         # Start listening in background
         threading.Thread(target=self.voice_listening_loop, daemon=True).start()
@@ -880,8 +880,8 @@ class ALIAS:
     def stop_voice_listening(self):
         """Stop voice listening"""
         self.is_listening = False
-        self.voice_button.config(text="🎙️ Start Listening", bg=self.colors['accent_blue'])
-        self.voice_status_label.config(text="🎙️ Voice: Ready")
+        self.voice_button.config(text="Start Listening", bg=self.colors['accent_blue'])
+        self.voice_status_label.config(text="Voice: Ready")
     
     def voice_listening_loop(self):
         """Main voice listening loop"""
@@ -899,7 +899,7 @@ class ALIAS:
                     # Check for wake word
                     for wake_word in wake_words:
                         if wake_word in text:
-                            self.root.after(0, lambda: self.add_ALIAS_message("🎙️ Wake word detected, listening for command..."))
+                            self.root.after(0, lambda: self.add_ALIAS_message("Wake word detected, listening for command..."))
                             
                             # Listen for command
                             with self.microphone as source:
@@ -909,7 +909,7 @@ class ALIAS:
                                 command = self.recognizer.recognize_google(command_audio)
                                 self.root.after(0, lambda c=command: self.process_voice_command(c))
                             except sr.UnknownValueError:
-                                self.root.after(0, lambda: self.add_ALIAS_message("🎙️ I didn't catch that command, sir."))
+                                self.root.after(0, lambda: self.add_ALIAS_message("I didn't catch that command, sir."))
                             break
                             
                 except sr.UnknownValueError:
@@ -923,7 +923,7 @@ class ALIAS:
     
     def process_voice_command(self, command):
         """Process a voice command"""
-        self.add_user_message(f"🎙️ {command}")
+        self.add_user_message(f"{command}")
         
         # Set to voice mode for appropriate response length
         original_mode = self.current_mode
@@ -942,7 +942,7 @@ class ALIAS:
             messagebox.showinfo("Voice Not Available", "Voice features require additional packages.")
             return
         
-        self.voice_input_button.config(text="🎙️ Listening...", state='disabled')
+        self.voice_input_button.config(text="Listening...", state='disabled')
         
         def listen():
             try:
@@ -953,13 +953,13 @@ class ALIAS:
                 self.root.after(0, lambda: self.input_text.insert(tk.END, text))
                 
             except sr.WaitTimeoutError:
-                self.root.after(0, lambda: self.add_ALIAS_message("🎙️ No speech detected."))
+                self.root.after(0, lambda: self.add_ALIAS_message("No speech detected."))
             except sr.UnknownValueError:
-                self.root.after(0, lambda: self.add_ALIAS_message("🎙️ Could not understand the audio."))
+                self.root.after(0, lambda: self.add_ALIAS_message("Could not understand the audio."))
             except Exception as e:
-                self.root.after(0, lambda: self.add_ALIAS_message(f"🎙️ Voice input error: {e}"))
+                self.root.after(0, lambda: self.add_ALIAS_message(f"Voice input error: {e}"))
             finally:
-                self.root.after(0, lambda: self.voice_input_button.config(text="🎙️ Voice\nInput", state='normal'))
+                self.root.after(0, lambda: self.voice_input_button.config(text="Voice\nInput", state='normal'))
         
         threading.Thread(target=listen, daemon=True).start()
     
@@ -1074,7 +1074,7 @@ class ALIAS:
         settings_window.configure(bg=self.colors['bg_primary'])
         settings_window.transient(self.root)
         
-        tk.Label(settings_window, text="🆓 FREE ALIAS Configuration", 
+        tk.Label(settings_window, text="FREE ALIAS Configuration", 
                 font=('Arial', 16, 'bold'), 
                 fg=self.colors['accent_green'], 
                 bg=self.colors['bg_primary']).pack(pady=20)
@@ -1096,7 +1096,7 @@ class ALIAS:
                 fg=self.colors['text_secondary'], 
                 bg=self.colors['bg_primary']).pack(anchor='w', padx=5, pady=5)
         
-        tk.Label(backend_frame, text="💡 All backends are completely free!", 
+        tk.Label(backend_frame, text="All backends are completely free!", 
                 font=('Arial', 10, 'italic'),
                 fg=self.colors['accent_gold'], 
                 bg=self.colors['bg_primary']).pack(anchor='w', padx=5, pady=5)
@@ -1132,7 +1132,7 @@ class ALIAS:
                                        bg=self.colors['bg_primary'])
             voice_frame.pack(fill='x', padx=20, pady=10)
             
-            tk.Button(voice_frame, text="🎤 Test Microphone", 
+            tk.Button(voice_frame, text="Test Microphone", 
                      command=self.test_microphone,
                      bg=self.colors['accent_gold'], fg='black',
                      font=('Arial', 10)).pack(pady=5)
@@ -1148,7 +1148,7 @@ class ALIAS:
             messagebox.showinfo("Voice Not Available", "Voice features require additional packages.")
             return
         
-        self.add_ALIAS_message("🎤 Testing microphone... Please speak now.")
+        self.add_ALIAS_message("Testing microphone... Please speak now.")
         
         def test():
             try:
@@ -1156,14 +1156,14 @@ class ALIAS:
                     audio = self.recognizer.listen(source, timeout=3, phrase_time_limit=5)
                 
                 text = self.recognizer.recognize_google(audio)
-                self.root.after(0, lambda: self.add_ALIAS_message(f"🎤 Microphone test successful! You said: '{text}'"))
+                self.root.after(0, lambda: self.add_ALIAS_message(f"Microphone test successful! You said: '{text}'"))
                 
             except sr.WaitTimeoutError:
-                self.root.after(0, lambda: self.add_ALIAS_message("🎤 No speech detected during test."))
+                self.root.after(0, lambda: self.add_ALIAS_message("No speech detected during test."))
             except sr.UnknownValueError:
-                self.root.after(0, lambda: self.add_ALIAS_message("🎤 Speech was unintelligible."))
+                self.root.after(0, lambda: self.add_ALIAS_message("Speech was unintelligible."))
             except Exception as e:
-                self.root.after(0, lambda: self.add_ALIAS_message(f"🎤 Microphone test failed: {e}"))
+                self.root.after(0, lambda: self.add_ALIAS_message(f"Microphone test failed: {e}"))
         
         threading.Thread(target=test, daemon=True).start()
     
@@ -1182,7 +1182,7 @@ class ALIAS:
         help_text.pack(fill='both', expand=True, padx=10, pady=10)
         
         help_content = """
-🆓 FREE ALIAS - JUST A RATHER VERY INTELLIGENT SYSTEM
+FREE ALIAS - JUST A RATHER VERY INTELLIGENT SYSTEM
 
 OVERVIEW:
 FREE ALIAS is your ultimate AI companion with zero costs! It combines voice 
@@ -1218,37 +1218,37 @@ VOICE FEATURES:
 • Text-to-Speech: ALIAS speaks responses when voice is active
 
 CAPABILITIES:
-📚 Study & Learning:
+Study & Learning:
 - Subject-specific tutoring across all academic areas
 - Problem solving with step-by-step explanations
 - Quiz generation and knowledge testing
 - Study tips and learning strategies
 
-💼 Work & Productivity:
+Work & Productivity:
 - Professional email composition
 - Project planning and management
 - Data analysis assistance
 - Goal setting and time management
 
-🎨 Creative & Writing:
+Creative & Writing:
 - Story and content creation
 - Brainstorming and ideation
 - Text editing and improvement
 - Creative project guidance
 
-💻 Tech & Programming:
+Tech & Programming:
 - Code debugging and optimization
 - Architecture design assistance
 - Technical documentation
 - Learning new technologies
 
-🏠 Personal & Life:
+Personal & Life:
 - Life planning and goal setting
 - Budget and financial advice
 - Health and wellness guidance
 - Daily organization
 
-🎮 Fun & Entertainment:
+Fun & Entertainment:
 - Jokes and humor
 - Game recommendations
 - Casual conversation
