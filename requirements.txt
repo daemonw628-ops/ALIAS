@@ -1,0 +1,14 @@
+# ALIAS Requirements
+# Core - required for basic functionality
+requests>=2.25.0
+numpy>=1.19.0
+
+# Optional: Voice features
+# SpeechRecognition>=3.8.1
+# pyttsx3>=2.90
+# pyaudio>=0.2.11
+# pygame>=2.0.0
+
+# Optional: External AI models (not needed, we have our own!)
+# transformers>=4.21.0
+# torch>=1.12.0

@@ -1,0 +1,72 @@
+# Logs
+*.log
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Dependency directories
+node_modules/
+venv/
+.venv/
+env/
+.env
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Settings files (may contain sensitive info)
+*_settings.json
+jarvis_settings.json
+free_jarvis_settings.json
+ALIAS_settings.json
+
+# AI/ML artifacts
+embeddings.pkl
+*.pkl
+
+# Audio files
+*.wav
+*.mp3
+
+# Temporary files
+*.tmp
+*.temp
+*.temp
