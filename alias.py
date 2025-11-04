@@ -1039,11 +1039,22 @@ class ALIAS:
     
     # Quick action implementations
     def web_search(self):
-        """Open web search"""
+        """Search the web using ALIAS's built-in search"""
         query = tk.simpledialog.askstring("Web Search", "What would you like to search for?")
         if query:
-            webbrowser.open(f"https://www.google.com/search?q={quote(query)}")
-            self.add_ALIAS_message(f"Opened web search for: {query}")
+            self.add_user_message(f"Search: {query}")
+            # Use ALIAS's built-in Wikipedia search
+            if hasattr(self.ai_engine, 'custom_engine') and self.ai_engine.custom_engine:
+                result = self.ai_engine.custom_engine.search_web(query)
+                if result:
+                    self.add_ALIAS_message(result)
+                else:
+                    self.add_ALIAS_message("No search results found. Opening browser search...")
+                    webbrowser.open(f"https://www.google.com/search?q={quote(query)}")
+            else:
+                # Fallback to browser
+                webbrowser.open(f"https://www.google.com/search?q={quote(query)}")
+                self.add_ALIAS_message(f"Opened web search for: {query}")
     
     def get_time(self):
         """Get current time"""

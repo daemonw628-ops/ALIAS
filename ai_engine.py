@@ -13,6 +13,9 @@ from typing import List, Dict, Tuple, Optional
 import re
 import math
 from collections import defaultdict
+import requests
+from urllib.parse import quote
+from html import unescape
 
 
 class SentenceEmbedder:
@@ -164,9 +167,6 @@ class KnowledgeBase:
             "I can help write essays, stories, emails, and other documents.",
             "For study help, tell me the subject and what you need to understand.",
             "I learn from our conversations to provide better assistance.",
-            "King Louis XVI was the monarch at the start of the French Revolution.",
-            "The capital of France is Paris.",
-            "The French Revolution began in 1789 and led to the fall of the monarchy.",
         ]
         
         for text in base_knowledge:
@@ -353,6 +353,74 @@ class ResponseGenerator:
         return contexts.get(mode, "")
 
 
+class WebSearchTool:
+    """
+    Free web search using Wikipedia API
+    No API keys required
+    """
+    
+    def __init__(self):
+        self.headers = {
+            'User-Agent': 'ALIAS/1.0 (Educational AI Assistant; https://github.com/daemonw628-ops/ALIAS)'
+        }
+    
+    def search_wikipedia(self, query: str) -> Dict[str, str]:
+        """Search Wikipedia for information"""
+        try:
+            # Wikipedia API - free, no API key needed
+            search_url = f"https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch={quote(query)}&format=json&srlimit=1"
+            search_response = requests.get(search_url, headers=self.headers, timeout=5)
+            
+            if search_response.status_code != 200:
+                return {'answer': ''}
+            
+            search_data = search_response.json()
+            
+            if not search_data.get('query', {}).get('search'):
+                return {'answer': ''}
+            
+            # Get the first result's page title
+            page_title = search_data['query']['search'][0]['title']
+            
+            # Get page summary
+            summary_url = f"https://en.wikipedia.org/w/api.php?action=query&prop=extracts&exintro&explaintext&titles={quote(page_title)}&format=json"
+            summary_response = requests.get(summary_url, headers=self.headers, timeout=5)
+            
+            if summary_response.status_code != 200:
+                return {'answer': ''}
+            
+            summary_data = summary_response.json()
+            pages = summary_data.get('query', {}).get('pages', {})
+            
+            for page_id, page_data in pages.items():
+                extract = page_data.get('extract', '')
+                if extract:
+                    # Return first 500 characters
+                    answer = extract[:500] + ('...' if len(extract) > 500 else '')
+                    return {
+                        'answer': answer,
+                        'source': f"https://en.wikipedia.org/wiki/{quote(page_title.replace(' ', '_'))}",
+                        'title': page_title
+                    }
+            
+        except Exception as e:
+            return {'answer': '', 'error': str(e)}
+        
+        return {'answer': ''}
+    
+    def search_and_summarize(self, query: str) -> str:
+        """Search and return a clean summary"""
+        result = self.search_wikipedia(query)
+        
+        if result.get('answer'):
+            summary = f"[Web Search Result]\n\n{result['answer']}"
+            if result.get('source'):
+                summary += f"\n\nSource: {result['source']}"
+            return summary
+        
+        return ""
+
+
 class FreeAIEngine:
     """
     Complete Free AI Engine
@@ -364,14 +432,49 @@ class FreeAIEngine:
         self.embedder = SentenceEmbedder()
         self.knowledge_base = KnowledgeBase(self.embedder)
         self.generator = ResponseGenerator(self.embedder, self.knowledge_base)
+        self.search_tool = WebSearchTool()
         print("Free AI Engine Ready!")
     
     def get_response(self, message: str, mode: str = "Assistant", subject: str = "General") -> str:
         """
-        Get AI response
+        Get AI response with web search augmentation
         This is the main method called by ALIAS
         """
         try:
+            ml = message.lower()
+            
+            # Check if query needs web search
+            search_triggers = [
+                'weather', 'news', 'latest', 'current', 'today', 'now',
+                'price of', 'cost of', 'what is happening', 'stock price',
+                'score', 'election', 'who won', 'when is', 'what time'
+            ]
+            
+            # Check for informational queries that would benefit from web search
+            info_patterns = [
+                r'\bwho (is|was|were)\b',
+                r'\bwhat (is|was|were|are)\b',
+                r'\btell me about\b',
+                r'\bexplain\b.*\b(to me|about)\b',
+                r'\binformation (about|on)\b',
+                r'\bdefine\b',
+                r'\bdefinition of\b'
+            ]
+            
+            needs_search = any(trigger in ml for trigger in search_triggers)
+            needs_search = needs_search or any(re.search(pattern, ml) for pattern in info_patterns)
+            
+            # Skip search for queries we have direct answers for
+            if ('french revolution' in ml) or (('king' in ml or 'kings' in ml) and ('name' in ml)):
+                needs_search = False
+            
+            # Try web search for real-time/factual info
+            if needs_search:
+                search_result = self.search_tool.search_and_summarize(message)
+                if search_result:
+                    return search_result
+            
+            # Normal AI response
             response = self.generator.generate_response(message, mode)
             return response
         except Exception as e:
@@ -384,6 +487,10 @@ class FreeAIEngine:
                 f"Q: {message}\nA: {response}",
                 {'type': 'helpful_conversation', 'rating': 'positive'}
             )
+    
+    def search_web(self, query: str) -> str:
+        """Manually trigger web search"""
+        return self.search_tool.search_and_summarize(query)
     
     def save_state(self):
         """Save all learned knowledge"""
